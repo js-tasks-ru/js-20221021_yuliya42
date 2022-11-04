@@ -5,9 +5,9 @@
  * @returns {string[]}
  */
 export function sortStrings(arr, param = 'asc') {
-    let k = 1;
-    if (param === 'desc') { k = -1; }
-    const sortedArr = arr.slice();
-    sortedArr.sort( (str1, str2) => str1.localeCompare(str2, ["ru", "en"], { caseFirst: "upper" }) * k );
+    let direction = 1;
+    if (param === 'desc') { direction = -1; }
+    const sortedArr = [...arr];
+    sortedArr.sort( (str1, str2) => str1.localeCompare(str2, ["ru", "en"], { caseFirst: "upper" }) * direction );
     return sortedArr;
 }

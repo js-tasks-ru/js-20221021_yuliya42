@@ -7,7 +7,7 @@
 export const pick = (obj, ...fields) => {
     const pickObj = {};
     Object.entries(obj).map(([key, value]) => {
-        if (fields.find(item => item === key)) { pickObj[key] = value; }
+        if (fields.includes(key)) { pickObj[key] = value; }
     });
     return pickObj;
 };
