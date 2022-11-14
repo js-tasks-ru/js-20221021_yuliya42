@@ -51,13 +51,13 @@ export default class SortableTable {
 
     getHTMLbody () {
         let htmlBody = ``;
-        for (const itemData of this.data ) {
+        this.data.map( itemData => {
             htmlBody += `<a href="/products/${itemData.id}" class="sortable-table__row">`;
-            for (const itemHead of this.headerConfig ){
+            this.headerConfig.map( itemHead => {
               htmlBody += this.getHTMLbodyCell(itemHead.template, itemData[itemHead.id]);
-            }
+            });
             htmlBody +=  `</a>`;
-        }
+        })
         return htmlBody;
     }
 
