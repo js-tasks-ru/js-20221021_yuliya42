@@ -57,7 +57,6 @@ class Tooltip {
         if ( this.element ) {
             this.element.remove();
             this.element = null;
-            this.elemTarget = null;
         }        
     }
   
