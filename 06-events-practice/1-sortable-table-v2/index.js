@@ -76,11 +76,9 @@ export default class SortableTable {
     }  
 
     getHTMLhead () {
-        let htmlHead = ``;
-        for (const item of this.headersConfig ) {
-          htmlHead += this.getHTMLheadCell (item.id, item.title, item.sortable);
-        }
-        return htmlHead;
+        return this.headersConfig.map( 
+            item => this.getHTMLheadCell (item.id, item.title, item.sortable) 
+        ).join("");
     }
 
     getHTMLheadCell (itemID, itemTitle, itemSort) {
@@ -90,15 +88,16 @@ export default class SortableTable {
     }
 
     getHTMLbody () {
-        let htmlBody = ``;
-        this.data.map( itemData => {
-            htmlBody += `<a href="/products/${itemData.id}" class="sortable-table__row">`;
-            this.headersConfig.map( itemHead => {
-              htmlBody += this.getHTMLbodyCell(itemHead.template, itemData[itemHead.id]);
-            });
-            htmlBody +=  `</a>`;
-        })
-        return htmlBody;
+        return this.data.map( itemData => {
+            const row = `<a href="/products/${itemData.id}" class="sortable-table__row">`
+                        +
+                        this.headersConfig.map( itemHead => {
+                            return this.getHTMLbodyCell(itemHead.template, itemData[itemHead.id]);
+                        }).join("")
+                        +
+                        `</a>`;
+            return row;
+        }).join("");
     }
 
     getHTMLbodyCell ( template, value ) {
