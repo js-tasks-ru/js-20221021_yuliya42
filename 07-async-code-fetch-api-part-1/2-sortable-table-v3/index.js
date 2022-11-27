@@ -35,7 +35,7 @@ export default class SortableTable {
         this.start = start;
         this.end = end;
 
-        this.url = new URL(BACKEND_URL + '/' + url);
+        this.url = new URL(url, BACKEND_URL);
 
         this.url.searchParams.set('_start', this.start);
         this.url.searchParams.set('_end', this.end);
