@@ -20,7 +20,7 @@ export default class ColumnChart {
         this.link = link;
         this.formatHeading = formatHeading;
         this.chartHeight = 50;
-        this.url = new URL(BACKEND_URL + '/' + url);
+        this.url = new URL(url, BACKEND_URL);
         
         this.setRequestParams(range.from, range.to);
         this.render();
@@ -31,9 +31,11 @@ export default class ColumnChart {
 
         const strLink =  this.link === `` ? this.link : `<a href="${this.link}" class="column-chart__link">View all</a>`;
 
-        const strHeading = this.getHeaderValue(Object.values(this.data));        
+        const arrayValues = Object.values(this.data);
+
+        const strHeading = this.getHeaderValue(arrayValues);        
         
-        const strColumns = this.getHTMLcolumns(Object.values(this.data));
+        const strColumns = this.getHTMLcolumns(arrayValues);
         
         return `
             <div class="column-chart column-chart_loading"  style="--chart-height: ${this.chartHeight}">
@@ -75,7 +77,7 @@ export default class ColumnChart {
     getHTMLcolumns ( dataArr ) {        
         let strColumns = "";         
         const columnProps = this.getColumnProps(dataArr); 
-        columnProps.forEach( (item) => 
+        columnProps.map( (item) => 
             strColumns += `<div style="--value: ${item.value}" data-tooltip="${item.percent}"></div>`);
 
         return strColumns;
@@ -96,14 +98,15 @@ export default class ColumnChart {
                 this.data = data;
 
                 this.toogleSkeleton();
-                                
-                this.subElements.header.textContent = this.getHeaderValue(Object.values(this.data));
-                this.subElements.body.innerHTML = this.getHTMLcolumns(Object.values(this.data));
 
-                /*// Требуется ли обновлять this.element? Верно ли, что он не обновляется самостоятельно при обновлении this.subElements? При этом наоброт - обновляется
-                this.element.querySelector(".column-chart__chart").innerHTML = this.getHTMLcolumns(Object.values(this.data));                
-                this.element.querySelector(".column-chart__header").innerHTML = this.getHeaderValue(Object.values(this.data));  
-                */
+                const arrayValues = Object.values(this.data);
+                                
+                this.subElements.header.textContent = this.getHeaderValue(arrayValues);
+                this.subElements.body.innerHTML = this.getHTMLcolumns(arrayValues);
+
+                this.element.querySelector(".column-chart__chart").innerHTML = this.getHTMLcolumns(arrayValues);                
+                this.element.querySelector(".column-chart__header").innerHTML = this.getHeaderValue(arrayValues);  
+                
             })
             .catch( err => console.error('Ошибка загрузки с сервера: ', err ));
 
